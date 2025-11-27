@@ -78,15 +78,13 @@ public class Assignments {
     public static <T> Stream<T> task5(Stream<T> first, Stream<T> second) {
         Iterator<T> it1 = first.iterator();
         Iterator<T> it2 = second.iterator();
-
-        List<T> result = new ArrayList<>();
-
-        while (it1.hasNext() && it2.hasNext()) {
-            result.add(it1.next());
-            result.add(it2.next());
-        }
-
-        return result.stream();
+        return Stream.generate(() -> {
+            if (it1.hasNext() && it2.hasNext()) {
+                return Arrays.asList(it1.next(), it2.next());
+            }
+            return null;
+        })
+        .takeWhile(Objects::nonNull)
+        .flatMap(List::stream);
     }
 }
-
