@@ -81,6 +81,6 @@ public class Assignments {
         int minSize = Math.min(list1.size(), list2.size());
 
         return IntStream.range(0, minSize)
-                .flatMap(i -> Stream.of(list1.get(i), list2.get(i)));
+                .flatMapToObj(i -> Stream.of(list1.get(i), list2.get(i)));
     }
 }
