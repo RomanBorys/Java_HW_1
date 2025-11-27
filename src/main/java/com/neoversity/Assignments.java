@@ -13,7 +13,10 @@ public class Assignments {
      * @return String
      */
     public static String task1(List<String> names) {
-        return null;
+        return IntStream.range(0, names.size())
+                .filter(i -> i % 2 == 1)
+                .mapToObj(i -> i + ". " + names.get(i))
+                .collect(Collectors.joining(", "));
     }
 
     /**
@@ -24,7 +27,10 @@ public class Assignments {
      * @return список рядків у верхньому регістрі, відсортованих за спаданням
      */
     public static List<String> task2(List<String> items) {
-        return null;
+        return items.stream()
+                .map(String::toUpperCase)
+                .sorted(Comparator.reverseOrder())
+                .toList();
     }
 
     /**
@@ -36,14 +42,19 @@ public class Assignments {
      * @return рядок з відсортованими числами, розділеними комами
      */
     public static String task3(String[] array) {
-        return null;
+        return Arrays.stream(array)
+                .flatMap(s -> Arrays.stream(s.split(", ")))
+                .map(Integer::parseInt)
+                .sorted()
+                .map(Object::toString)
+                .collect(Collectors.joining(", "));
     }
 
     /**
      * Використовуючи Stream.iterate, створіть безкінечний стрім випадкових чисел, але не використовуючи Math.random().
      * Реалізуйте свій лінійний конгруентний генератор.
      * Для цього почніть з x[0] = seed, і далі кожний наступний елемент рахуйте за формулою
-     * x[n + 1] = 1 (a x[n] + c) % m для коректних значень a, c, та m.
+     * x[n + 1] = (a * x[n] + c) % m
      *
      * @param a коефіцієнт a
      * @param c коефіцієнт c
@@ -52,20 +63,30 @@ public class Assignments {
      * @return безкінечний стрім випадкових чисел
      */
     public static Stream<Long> task4(long a, long c, long m, long seed) {
-        return null;
+        return Stream.iterate(seed, x -> (a * x + c) % m);
     }
 
     /**
      * Метод приймає на вхід два стріми, які містять однакову кількість елементів.
      * Необхідно повернути стрім, який чергує елементи з обох стрімів.
-     * Наприклад, для стрімів A, B, C та 1, 2, 3, 4 результатом буде A, 1, B, 2, C, 3.
-     * Треба зупинитися тоді, коли у одного зі стрімів закінчаться елементи.
+     * Зупинитися потрібно тоді, коли один зі стрімів закінчиться.
      *
      * @param first перший стрім
      * @param second другий стрім
      * @return чергований стрім
      */
     public static <T> Stream<T> task5(Stream<T> first, Stream<T> second) {
-        return null;
+        Iterator<T> it1 = first.iterator();
+        Iterator<T> it2 = second.iterator();
+
+        List<T> result = new ArrayList<>();
+
+        while (it1.hasNext() && it2.hasNext()) {
+            result.add(it1.next());
+            result.add(it2.next());
+        }
+
+        return result.stream();
     }
 }
+
