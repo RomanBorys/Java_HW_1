@@ -76,15 +76,11 @@ public class Assignments {
      * @return чергований стрім
      */
     public static <T> Stream<T> task5(Stream<T> first, Stream<T> second) {
-        Iterator<T> it1 = first.iterator();
-        Iterator<T> it2 = second.iterator();
-        return Stream.generate(() -> {
-            if (it1.hasNext() && it2.hasNext()) {
-                return Arrays.asList(it1.next(), it2.next());
-            }
-            return null;
-        })
-        .takeWhile(Objects::nonNull)
-        .flatMap(List::stream);
+        List<T> list1 = first.toList();
+        List<T> list2 = second.toList();
+        int minSize = Math.min(list1.size(), list2.size());
+
+        return IntStream.range(0, minSize)
+                .flatMap(i -> Stream.of(list1.get(i), list2.get(i)));
     }
 }
